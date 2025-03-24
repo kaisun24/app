@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech-Vision AI | Advanced Code Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --secondary-color: #34A853;
+            --accent-color: #EA4335;
+            --yellow-color: #FBBC05;
+            --light-background: #F8F9FA;
+            --dark-text: #202124;
+            --white: #FFFFFF;
+            --border-color: #DADCE0;
+            --code-bg: #F1F3F4;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 20px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--light-background);
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+        
+        .logo-text {
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(66, 133, 244, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .nav-link.active {
+            color: var(--primary-color);
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 40px 0;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+        
+        .sidebar-section {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sidebar-section:last-child {
+            border-bottom: none;
+        }
+        
+        .sidebar-title {
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--dark-text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sidebar-title i {
+            color: var(--primary-color);
+        }
+        
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 16px;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(66, 133, 244, 0.05);
+        }
+        
+        .file-upload i {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+        
+        .file-upload p {
+            color: var(--dark-text);
+            margin-bottom: 8px;
+        }
+        
+        .file-upload span {
+            color: var(--accent-color);
+            font-size: 12px;
+        }
+        
+        .upload-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            padding: 10px 16px;
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .upload-btn:hover {
+            background-color: #3367d6;
+        }
+        
+        .model-selection {
+            margin-top: 16px;
+        }
+        
+        .model-selection select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background-color: var(--white);
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        /* Tools Accordion */
+        .accordion {
+            margin-top: 8px;
+        }
+        
+        .accordion-item {
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+        
+        .accordion-header {
+            padding: 12px 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 500;
+        }
+        
+        .accordion-header i {
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: var(--transition);
+            padding: 0 8px;
+        }
+        
+        .accordion-item.active .accordion-content {
+            max-height: 500px;
+            padding: 12px 8px;
+        }
+        
+        .accordion-item.active .accordion-header i {
+            transform: rotate(180deg);
+        }
+        
+        .tool-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .form-group label {
+            font-size: 14px;
+            color: var(--dark-text);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .tool-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tool-btn:hover {
+            background-color: #3367d6;
+        }
+        
+        /* Main area */
+        .main-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            background-color: var(--white);
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .tab {
+            padding: 16px 24px;
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 500;
+            color: var(--dark-text);
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab:hover {
+            background-color: rgba(66, 133, 244, 0.05);
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        
+        .tab-content {
+            background-color: var(--white);
+            border-radius: 0 0 12px 12px;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            min-height: 400px;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.active {
+            display: block;
+        }
+        
+        /* Code Analysis Tab */
+        .code-analysis {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .analysis-card {
+            background-color: var(--light-background);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .analysis-card h3 {
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .metric {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: var(--dark-text);
+        }
+        
+        .recommendation-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .recommendation-item:last-child {
+            border-bottom: none;
+        }
+        
+        .recommendation-icon {
+            color: var(--yellow-color);
+            font-size: 18px;
+            margin-top: 2px;
+        }
+        
+        /* Search Results Tab */
+        .search-results {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .result-card {
+            background-color: var(--light-background);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .result-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .result-title {
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--dark-text);
+        }
+        
+        .result-title a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+        
+        .result-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .result-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .result-meta-item i {
+            color: var(--primary-color);
+        }
+        
+        .result-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .result-tag {
+            background-color: rgba(66, 133, 244, 0.1);
+            color: var(--primary-color);
+            border-radius: 16px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .result-description {
+            font-size: 14px;
+            color: var(--dark-text);
+            margin-bottom: 12px;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .result-btn {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .result-btn:hover {
+            background-color: rgba(66, 133, 244, 0.1);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        /* Code Explanation Tab */
+        .code-explanation {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .explanation-content {
+            background-color: var(--light-background);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .code-highlight {
+            background-color: var(--code-bg);
+            border-radius: 8px;
+            padding: 16px;
+            position: relative;
+            margin: 16px 0;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        
+        .code-header {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--primary-color);
+            color: var(--white);
+            font-family: 'Google Sans', sans-serif;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 0 8px 0 8px;
+        }
+        
+        /* Chat Section */
+        .chat-section {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+        }
+        
+        .chat-header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .chat-title {
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chat-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .chat-control-btn {
+            background-color: transparent;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .chat-control-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .chat-messages {
+            flex-grow: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            position: relative;
+        }
+        
+        .message-user {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: 18px 18px 4px 18px;
+            align-self: flex-end;
+        }
+        
+        .message-bot {
+            background-color: var(--light-background);
+            color: var(--dark-text);
+            border-radius: 18px 18px 18px 4px;
+            align-self: flex-start;
+        }
+        
+        .chat-input-area {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+        }
+        
+        .chat-input {
+            flex-grow: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            font-family: 'Roboto', sans-serif;
+            outline: none;
+            transition: var(--transition);
+        }
+        
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+        
+        .chat-send-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .chat-send-btn:hover {
+            background-color: #3367d6;
+        }
+        
+        /* Responsive Styles */
+        @media screen and (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .code-analysis {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media screen and (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .tab {
+                padding: 12px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-code logo-icon"></i>
+                    <span class="logo-text">Tech-Vision AI</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#" class="nav-link active" data-tab="code-analysis">Code Analysis</a>
+                    <a href="#" class="nav-link" data-tab="github-results">GitHub Search</a>
+                    <a href="#" class="nav-link" data-tab="stack-results">Stack Overflow</a>
+                    <a href="#" class="nav-link" data-tab="code-explanation">Code Explainer</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- File Upload Section -->
+                <div class="sidebar-section">
+                    <h2 class="sidebar-title"><i class="fas fa-upload"></i> Upload Code</h2>
+                    <div class="file-upload" id="dropzone">
+                        <input type="file" id="file-input" hidden accept=".py,.js,.java,.cpp,.c,.cs,.php,.rb,.go,.ts">
+                        <i class="fas fa-file-code"></i>
+                        <p>Drag & drop your code file here</p>
+                        <span>or click to browse</span>
+                    </div>
+                    <button class="upload-btn" id="analyze-btn">
+                        <i class="fas fa-search"></i> Analyze Code
+                    </button>
+                    <div class="model-selection">
+                        <select id="model-dropdown">
+                            <option value="llama3-70b-8192">llama3-70b-8192</option>
+                            <option value="mixtral-8x7b-32768">mixtral-8x7b-32768</option>
+                            <option value="gemma-7b-it">gemma-7b-it</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Tools Section -->
+                <div class="sidebar-section">
+                    <h2 class="sidebar-title"><i class="fas fa-tools"></i> Developer Tools</h2>
+                    <div class="accordion">
+                        <!-- GitHub Search Tool -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <span>GitHub Search</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="accordion-content">
+                                <form class="tool-form" id="github-search-form">
+                                    <div class="form-group">
+                                        <label for="repo-query">Search Query</label>
+                                        <input type="text" id="repo-query" placeholder="Enter keywords to search for repositories">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="language">Language</label>
+                                        <select id="language">
+                                            <option value="any">Any</option>
+                                            <option value="JavaScript">JavaScript</option>
+                                            <option value="Python">Python</option>
+                                            <option value="Java">Java</option>
+                                            <option value="C++">C++</option>
+                                            <option value="TypeScript">TypeScript</option>
+                                            <option value="Go">Go</option>
+                                            <option value="Rust">Rust</option>
+                                            <option value="PHP">PHP</option>
+                                            <option value="C#">C#</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="min-stars">Min Stars</label>
+                                        <select id="min-stars">
+                                            <option value="0">0</option>
+                                            <option value="10">10</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                            <option value="1000">1000</option>
+                                            <option value="10000">10000</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sort-by">Sort By</label>
+                                        <select id="sort-by">
+                                            <option value="stars">Stars</option>
+                                            <option value="forks">Forks</option>
+                                            <option value="updated">Updated</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="tool-btn">
+                                        <i class="fab fa-github"></i> Search Repositories
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Stack Overflow Tool -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <span>Stack Overflow</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="accordion-content">
+                                <form class="tool-form" id="stack-search-form">
+                                    <div class="form-group">
+                                        <label for="stack-query">Search Query</label>
+                                        <input type="text" id="stack-query" placeholder="Enter your technical question">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tag">Tag</label>
+                                        <select id="tag">
+                                            <option value="any">Any</option>
+                                            <option value="python">Python</option>
+                                            <option value="javascript">JavaScript</option>
+                                            <option value="java">Java</option>
+                                            <option value="c++">C++</option>
+                                            <option value="react">React</option>
+                                            <option value="node.js">Node.js</option>
+                                            <option value="android">Android</option>
+                                            <option value="ios">iOS</option>
+                                            <option value="sql">SQL</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="so-sort-by">Sort By</label>
+                                        <select id="so-sort-by">
+                                            <option value="votes">Votes</option>
+                                            <option value="newest">Newest</option>
+                                            <option value="activity">Activity</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="tool-btn">
+                                        <i class="fab fa-stack-overflow"></i> Search Stack Overflow
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Code Explainer Tool -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <span>Code Explainer</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="accordion-content">
+                                <form class="tool-form" id="code-explain-form">
+                                    <div class="form-group">
+                                        <label for="code-input">Code to Explain</label>
+                                        <textarea id="code-input" placeholder="Paste your code here..."></textarea>
+                                    </div>
+                                    <button type="submit" class="tool-btn">
+                                        <i class="fas fa-comment-alt"></i> Explain Code
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Status Section -->
+                <div class="sidebar-section">
+                    <h2 class="sidebar-title"><i class="fas fa-info-circle"></i> Status</h2>
+                    <div id="file-status">No file uploaded yet</div>
+                </div>
+            </div>
+            
+            <!-- Main Area -->
+            <div class="main-area">
+                <!-- Tabs Navigation -->
+                <div class="tabs">
+                    <div class="tab active" data-content="code-analysis">Code Analysis</div>
+                    <div class="tab" data-content="github-results">GitHub Results</div>
+                    <div class="tab" data-content="stack-results">Stack Overflow Results</div>
+                    <div class="tab" data-content="code-explanation">Code Explanation</div>
+                </div>
+                
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Code Analysis Tab -->
+                    <div class="tab-pane active" id="code-analysis">
+                        <div class="code-analysis">
+                            <div class="analysis-card">
+                                <h3><i class="fas fa-chart-bar"></i> Code Metrics</h3>
+                                <div class="metric-grid">
+                                    <div class="metric">
+                                        <div class="metric-value" id="language-metric">-</div>
+                                        <div class="metric-label">Language</div>
+                                    </div>
+                                    <div class="metric">
+                                        <div class="metric-value" id="total-lines-metric">0</div>
+                                        <div class="metric-label">Total Lines</div>
+                                    </div>
+                                    <div class="metric">
+                                        <div class="metric-value" id="code-lines-metric">0</div>
+                                        <div class="metric-label">Code Lines</div>
+                                    </div>
+                                    <div class="metric">
+                                        <div class="metric-value" id="comment-lines-metric">0</div>
+                                        <div class="metric-label">Comment Lines</div>
+                                    </div>
+                                    <div class="metric">
+                                        <div class="metric-value" id="functions-metric">0</div>
+                                        <div class="metric-label">Functions</div>
+                                    </div>
+                                    <div class="metric">
+                                        <div class="metric-value" id="complexity-metric">0</div>
+                                        <div class="metric-label">Complexity</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="analysis-card">
+                                <h3><i class="fas fa-lightbulb"></i> Recommendations</h3>
+                                <div id="recommendations-container">
+                                    <p>Upload and analyze code to see recommendations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- GitHub Results Tab -->
+                    <div class="tab-pane" id="github-results">
+                        <div class="search-results" id="repo-results-container">
+                            <p>Search for repositories to see results here</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Stack Overflow Results Tab -->
+                    <div class="tab-pane" id="stack-results">
+                        <div class="search-results" id="stack-results-container">
+                            <p>Search for questions to see results here</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Code Explanation Tab -->
+                    <div class="tab-pane" id="code-explanation">
+                        <div class="code-explanation" id="explanation-container">
+                            <p>Paste your code and click 'Explain Code' to see an explanation here</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Section -->
+                <div class="chat-section">
+                    <div class="chat-header">
+                        <div class="chat-title">
+                            <i class="fas fa-robot"></i> Tech Assistant
+                        </div>
+                        <div class="chat-controls">
+                            <button class="chat-control-btn" id="clear-chat-btn" title="Clear Chat">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message message-bot">
+                            Hello! I'm your Tech Assistant. Upload a code file or use one of the developer tools to get started.
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" class="chat-input" id="chat-input" placeholder="Ask about your code or type /github to search repos...">
+                        <button class="chat-send-btn" id="chat-send-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="tech-vision.js"></script>
+</body>
+</html> 
